@@ -1,0 +1,157 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+// Classe que representa um contato de emergência
+class ContatoEmergencia {
+    private String nome;
+    private String telefone;
+    private String email;
+
+    public ContatoEmergencia(String nome, String telefone, String email) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Nome: " + nome + ", Telefone: " + telefone + ", Email: " + email;
+    }
+}
+
+// Classe que representa um empregado
+class Empregado {
+    private String id;
+    private String nome;
+    private int idade;
+    private String cargo;
+    private double salario;
+    private String alergias;
+    private String problemasMedicos;
+    private ContatoEmergencia contatoEmergencia;
+
+    public Empregado(String id, String nome, int idade, String cargo, double salario, String alergias, String problemasMedicos, ContatoEmergencia contatoEmergencia) {
+        this.id = id;
+        this.nome = nome;
+        this.idade = idade;
+        this.cargo = cargo;
+        this.salario = salario;
+        this.alergias = alergias;
+        this.problemasMedicos = problemasMedicos;
+        this.contatoEmergencia = contatoEmergencia;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Nome: " + nome + ", Idade: " + idade + ", Cargo: " + cargo + ", Salário: " + salario +
+                "\nAlergias: " + alergias + ", Problemas Médicos: " + problemasMedicos +
+                "\nContato de Emergência: " + contatoEmergencia;
+    }
+}
+
+// Classe para gerenciar os empregados
+class GerenciamentoEmpregados {
+    private List<Empregado> empregados;
+
+    public GerenciamentoEmpregados() {
+        this.empregados = new ArrayList<>();
+    }
+
+    public void adicionarEmpregado(Empregado empregado) {
+        empregados.add(empregado);
+    }
+
+    public void listarEmpregados() {
+        if (empregados.isEmpty()) {
+            System.out.println("Nenhum empregado cadastrado.");
+        } else {
+            for (Empregado empregado : empregados) {
+                System.out.println(empregado);
+            }
+        }
+    }
+
+    public Empregado buscarEmpregadoPorId(String id) {
+        for (Empregado empregado : empregados) {
+            if (empregado.getId().equals(id)) {
+                return empregado;
+            }
+        }
+        return null;
+    }
+}
+
+// Classe principal para interação com o usuário
+public class Main {
+    public static void main(String[] args) {
+        GerenciamentoEmpregados gerenciamento = new GerenciamentoEmpregados();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\n1. Adicionar empregado");
+            System.out.println("2. Listar empregados");
+            System.out.println("3. Buscar empregado por ID");
+            System.out.println("4. Sair");
+            System.out.print("Escolha uma opção: ");
+            int escolha = scanner.nextInt();
+            scanner.nextLine();  // Consumir a nova linha
+
+            if (escolha == 1) {
+                System.out.print("ID do empregado: ");
+                String id = scanner.nextLine();
+                System.out.print("Nome: ");
+                String nome = scanner.nextLine();
+                System.out.print("Idade: ");
+                int idade = scanner.nextInt();
+                scanner.nextLine();  // Consumir a nova linha
+                System.out.print("Cargo: ");
+                String cargo = scanner.nextLine();
+                System.out.print("Salário: ");
+                double salario = scanner.nextDouble();
+                scanner.nextLine();  // Consumir a nova linha
+                System.out.print("Alergias: ");
+                String alergias = scanner.nextLine();
+                System.out.print("Problemas Médicos: ");
+                String problemasMedicos = scanner.nextLine();
+
+                System.out.print("Nome do Contato de Emergência: ");
+                String nomeContato = scanner.nextLine();
+                System.out.print("Telefone do Contato de Emergência: ");
+                String telefoneContato = scanner.nextLine();
+                System.out.print("Email do Contato de Emergência: ");
+                String emailContato = scanner.nextLine();
+
+                ContatoEmergencia contatoEmergencia = new ContatoEmergencia(nomeContato, telefoneContato, emailContato);
+                Empregado novoEmpregado = new Empregado(id, nome, idade, cargo, salario, alergias, problemasMedicos, contatoEmergencia);
+                gerenciamento.adicionarEmpregado(novoEmpregado);
+
+            } else if (escolha == 2) {
+                gerenciamento.listarEmpregados();
+
+            } else if (escolha == 3) {
+                System.out.print("ID do empregado: ");
+                String id = scanner.nextLine();
+                Empregado empregado = gerenciamento.buscarEmpregadoPorId(id);
+                if (empregado != null) {
+                    System.out.println(empregado);
+                } else {
+                    System.out.println("Empregado não encontrado.");
+                }
+
+            } else if (escolha == 4) {
+                System.out.println("Encerrando o programa.");
+                break;
+
+            } else {
+                System.out.println("Opção inválida, tente novamente.");
+            }
+        }
+
+        scanner.close();
+    }
+}
